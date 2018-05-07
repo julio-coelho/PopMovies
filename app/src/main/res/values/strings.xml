@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PopMovies</string>
+
+    <string name="api_key"></string>
+
+    <string name="error_message">An error has occurred. Please try again later.</string>
+
+    <string name="action_popular">Most Popular</string>
+    <string name="action_top_rated">Highest Rated</string>
+
+    <string name="label_release_date">Release Date\n%1$s</string>
+    <string name="label_vote_average">Vote Average\n%1$.1f</string>
+
+    <string name="content_image_movie">Movie Poster</string>
+</resources>
