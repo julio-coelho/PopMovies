@@ -1,4 +1,4 @@
-package com.example.android.popmovies;
+package com.example.android.popmovies.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.popmovies.Movie;
+import com.example.android.popmovies.R;
 import com.example.android.popmovies.utils.MovieServiceUtil;
 import com.squareup.picasso.Picasso;
 
@@ -83,7 +85,7 @@ public class DetailActivity extends AppCompatActivity {
         mMovieTitle.setVisibility(View.INVISIBLE);
     }
 
-    public class MovieDetailTask extends AsyncTask<Integer, Void, Movie> {
+    class MovieDetailTask extends AsyncTask<Integer, Void, Movie> {
 
         @Override
         protected void onPreExecute() {

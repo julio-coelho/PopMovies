@@ -1,4 +1,4 @@
-package com.example.android.popmovies;
+package com.example.android.popmovies.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +12,9 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.popmovies.Movie;
+import com.example.android.popmovies.MovieAdapter;
+import com.example.android.popmovies.R;
 import com.example.android.popmovies.utils.MovieServiceUtil;
 
 import org.json.JSONArray;
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
         startActivity(intent);
     }
 
-    public class MovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+    class MovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -168,4 +171,5 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
             }
         }
     }
+
 }

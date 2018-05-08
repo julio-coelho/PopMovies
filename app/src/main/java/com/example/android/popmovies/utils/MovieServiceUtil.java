@@ -15,7 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class MovieServiceUtil {
+public final class MovieServiceUtil {
+
+    private MovieServiceUtil() {}
 
     private static final String TAG = MovieServiceUtil.class.getSimpleName();
 

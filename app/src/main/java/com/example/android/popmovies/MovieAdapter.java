@@ -26,15 +26,21 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+        ViewHolder holder;
+
         final Movie movie = getItem(position);
 
         // Recycler process
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_item, parent, false);
+            holder = new ViewHolder();
+            holder.posterImageView = convertView.findViewById(R.id.iv_movie_item);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView posterImageView = convertView.findViewById(R.id.iv_movie_item);
-        Picasso.with(getContext()).load(movie.getPosterPath()).into(posterImageView);
+        Picasso.with(getContext()).load(movie.getPosterPath()).into(holder.posterImageView);
 
         convertView.setOnClickListener(new View.OnClickListener() {
 
@@ -49,5 +55,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
     public interface ClickHandler {
         void onClick(Movie movie);
+    }
+
+    static class ViewHolder {
+        ImageView posterImageView;
     }
 }
