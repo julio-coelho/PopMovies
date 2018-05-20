@@ -6,9 +6,10 @@
 
     <ImageView
         android:id="@+id/iv_movie_item"
-        android:layout_width="206dp"
-        android:layout_height="308dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/content_image_movie" />
 
 </FrameLayout>

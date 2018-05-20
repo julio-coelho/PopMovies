@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -42,6 +45,11 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         mMovieTitle = findViewById(R.id.tv_movie_title);
         mMovieReleaseDate = findViewById(R.id.tv_movie_release_date);
         mMovieVoteAverage = findViewById(R.id.tv_movie_vote_average);
@@ -61,13 +69,23 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void showData() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
 
         mMovieTitle.setText(mMovie.getTitle());
         mMovieTitle.setVisibility(View.VISIBLE);
 
-        mMovieReleaseDate.setText(getString(R.string.label_release_date, mMovie.getReleaseDate()));
+        mMovieReleaseDate.setText(getString(R.string.label_release_date, mMovie.getFormattedReleaseDate()));
         mMovieReleaseDate.setVisibility(View.VISIBLE);
 
         mMovieVoteAverage.setText(getString(R.string.label_vote_average, mMovie.getVoteAverage()));

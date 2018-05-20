@@ -6,32 +6,45 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Movie implements Parcelable {
 
     private Integer id;
     private String title;
-    private LocalDate releaseDate;
+    private Date releaseDate;
     private String posterPath;
     private Double voteAverage;
     private String overview;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public Movie(JSONObject json) throws JSONException {
 
         this.id = json.getInt("id");
         this.title = json.getString("title");
-        this.releaseDate = LocalDate.parse(json.getString("release_date"));
         this.posterPath = json.getString("poster_path");
         this.voteAverage = json.getDouble("vote_average");
         this.overview = json.getString("overview");
+
+        try {
+            this.releaseDate = sdf.parse(json.getString("release_date"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private Movie(Parcel in) {
 
         this.id = in.readInt();
         this.title = in.readString();
-        this.releaseDate = LocalDate.parse(in.readString());
+        try {
+            this.releaseDate = sdf.parse(in.readString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.posterPath = in.readString();
         this.voteAverage = in.readDouble();
         this.overview = in.readString();
@@ -53,11 +66,11 @@ public class Movie implements Parcelable {
         this.title = title;
     }
 
-    public LocalDate getReleaseDate() {
-        return releaseDate;
+    public String getFormattedReleaseDate() {
+        return sdf.format(releaseDate);
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -94,7 +107,7 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(title);
-        dest.writeString(releaseDate.toString());
+        dest.writeString(sdf.format(releaseDate));
         dest.writeString(posterPath);
         dest.writeDouble(voteAverage);
         dest.writeString(overview);
