@@ -16,10 +16,12 @@ public class Movie implements Parcelable {
     private String title;
     private Date releaseDate;
     private String posterPath;
+    private Integer runtime;
     private Double voteAverage;
     private String overview;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
 
     public Movie(JSONObject json) throws JSONException {
 
@@ -28,6 +30,7 @@ public class Movie implements Parcelable {
         this.posterPath = json.getString("poster_path");
         this.voteAverage = json.getDouble("vote_average");
         this.overview = json.getString("overview");
+        this.runtime = json.optInt("runtime", 0);
 
         try {
             this.releaseDate = sdf.parse(json.getString("release_date"));
@@ -70,6 +73,10 @@ public class Movie implements Parcelable {
         return sdf.format(releaseDate);
     }
 
+    public String getReleaseYear() {
+        return yearFormatter.format(releaseDate);
+    }
+
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
@@ -98,6 +105,14 @@ public class Movie implements Parcelable {
         this.overview = overview;
     }
 
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -111,6 +126,7 @@ public class Movie implements Parcelable {
         dest.writeString(posterPath);
         dest.writeDouble(voteAverage);
         dest.writeString(overview);
+        dest.writeInt(runtime);
     }
 
     public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
