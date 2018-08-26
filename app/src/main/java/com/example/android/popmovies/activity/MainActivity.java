@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
                 option = params[0];
             }
 
-            URL url = MovieServiceUtil.buildListUrl(option, MainActivity.this);
+            URL url = MovieServiceUtil.buildListUrl(option);
 
             try {
                 // response as text

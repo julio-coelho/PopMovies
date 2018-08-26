@@ -1,15 +1,29 @@
 <resources>
     <string name="app_name">PopMovies</string>
 
-    <string name="api_key"></string>
-
     <string name="error_message">An error has occurred. Please try again later.</string>
 
     <string name="action_popular">Most Popular</string>
     <string name="action_top_rated">Highest Rated</string>
 
-    <string name="label_release_date">Release Date\n%1$s</string>
-    <string name="label_vote_average">Vote Average\n%1$.1f</string>
-
+    <string name="label_release_date">%1$s</string>
+    <string name="label_runtime">%1$dmin</string>
+    <string name="label_vote_average">%1$.1f/10</string>
     <string name="content_image_movie">Movie Poster</string>
+    <string name="label_trailer_title">Trailers:</string>
+    <string name="chooser_title">Open with</string>
+    <string name="url_action_youtube">https://www.youtube.com/watch?v=%1$s</string>
+    <string name="label_review_title">Reviews:</string>
+    <string name="label_review_author">Written by</string>
+
+    <!--Sample Details-->
+    <string name="movie_title">Avengers: Infinity War</string>
+    <string name="movie_release_date">2018</string>
+    <string name="movie_runtime">149min</string>
+    <string name="movie_rating">8.3/10</string>
+    <string name="movie_overview">As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.</string>
+    <string name="movie_trailer">Official Trailer</string>
+    <string name="review_author">Screen-Space</string>
+    <string name="review_content">It is a bold undertaking, to readjust what is expected of the MCU/Avengers formula, and there are moments when the sheer scale and momentum match the narrative ambition..."Read the full review here: http://screen-space.squarespace.com/reviews/2018/4/25/avengers-infinity-war.html</string>
+
 </resources>
