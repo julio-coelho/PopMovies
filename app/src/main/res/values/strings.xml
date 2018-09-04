@@ -5,6 +5,7 @@
 
     <string name="action_popular">Most Popular</string>
     <string name="action_top_rated">Highest Rated</string>
+    <string name="action_favorite">Favorites</string>
 
     <string name="label_release_date">%1$s</string>
     <string name="label_runtime">%1$dmin</string>

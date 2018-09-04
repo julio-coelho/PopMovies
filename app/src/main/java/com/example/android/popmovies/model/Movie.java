@@ -1,7 +1,10 @@
-package com.example.android.popmovies;
+package com.example.android.popmovies.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.example.android.popmovies.data.MovieContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +22,7 @@ public class Movie implements Parcelable {
     private Integer runtime;
     private Double voteAverage;
     private String overview;
+    private Boolean favorite;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
@@ -37,6 +41,20 @@ public class Movie implements Parcelable {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        this.favorite = false;
+    }
+
+    public Movie(Cursor cursor) {
+
+        this.id = cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry._ID));
+        this.title = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_TITLE));
+        this.posterPath = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER_PATH)).replaceAll("http://image.tmdb.org/t/p/w185", "");
+        this.voteAverage = cursor.getDouble(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE));
+        this.overview = cursor.getString(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_OVERVIEW));
+        this.runtime = cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RUNTIME));
+        this.releaseDate = new Date(cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE)));
+        this.favorite = true;
     }
 
     private Movie(Parcel in) {
@@ -51,6 +69,7 @@ public class Movie implements Parcelable {
         this.posterPath = in.readString();
         this.voteAverage = in.readDouble();
         this.overview = in.readString();
+        this.favorite = Boolean.valueOf(in.readString());
     }
 
     public Integer getId() {
@@ -69,17 +88,15 @@ public class Movie implements Parcelable {
         this.title = title;
     }
 
-    public String getFormattedReleaseDate() {
-        return sdf.format(releaseDate);
-    }
+    public Date getReleaseDate() { return releaseDate; }
+
+    public String getFormattedReleaseDate() { return sdf.format(releaseDate); }
 
     public String getReleaseYear() {
         return yearFormatter.format(releaseDate);
     }
 
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
+    public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
 
     public String getPosterPath() {
         return "http://image.tmdb.org/t/p/w185" + posterPath;
@@ -113,6 +130,10 @@ public class Movie implements Parcelable {
         this.runtime = runtime;
     }
 
+    public Boolean isFavorite() { return favorite; }
+
+    public void setFavorite(Boolean favorite) { this.favorite = favorite; }
+
     @Override
     public int describeContents() {
         return 0;
@@ -127,6 +148,7 @@ public class Movie implements Parcelable {
         dest.writeDouble(voteAverage);
         dest.writeString(overview);
         dest.writeInt(runtime);
+        dest.writeString(favorite.toString());
     }
 
     public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +23,18 @@
         </activity>
 
         <activity
-            android:name=".activity.DetailActivity"
-            android:parentActivityName=".activity.MainActivity" >
+            android:name=".DetailActivity"
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
+
+        <provider
+            android:name="com.example.android.popmovies.data.MovieProvider"
+            android:authorities="com.example.android.popmovies"
+            android:exported="false" />
+
     </application>
 
 </manifest>

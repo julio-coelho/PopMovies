@@ -1,6 +1,8 @@
-package com.example.android.popmovies.activity;
+package com.example.android.popmovies;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +14,11 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.android.popmovies.Movie;
-import com.example.android.popmovies.MovieAdapter;
-import com.example.android.popmovies.R;
+import com.example.android.popmovies.data.MovieContract;
+import com.example.android.popmovies.model.Movie;
+import com.example.android.popmovies.adapter.MovieAdapter;
 import com.example.android.popmovies.utils.MovieServiceUtil;
+import com.facebook.stetho.Stetho;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ClickHandler {
 
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Stetho.initializeWithDefaults(this);
+
         setContentView(R.layout.activity_main);
 
         mGridView = findViewById(R.id.gv_movies);
@@ -82,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
         } else if (id == R.id.action_sort_top_rated) {
             new MovieTask().execute("top_rated");
             return true;
+        } else if (id == R.id.action_sort_favorite) {
+            new MovieTask().execute("favorite");
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -107,6 +117,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
 
     class MovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
+        private ArrayList<Movie> queryFavorites() {
+
+            ArrayList<Movie> favorites = new ArrayList<>();
+
+            Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, MovieContract.MovieEntry.COLUMN_TITLE);
+
+            if (cursor != null && cursor.getCount() > 0) {
+
+                while (cursor.moveToNext()) {
+                    favorites.add(new Movie(cursor));
+                }
+            }
+
+            return favorites;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -123,38 +149,44 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
                 option = params[0];
             }
 
-            URL url = MovieServiceUtil.buildListUrl(option);
+            if (option.equals("favorite")) {
+                return queryFavorites();
+            } else {
 
-            try {
-                // response as text
-                String response = MovieServiceUtil.getResponseFromHttpUrl(url, MainActivity.this);
+                URL url = MovieServiceUtil.buildListUrl(option);
 
-                if (response != null) {
+                try {
+                    // response as text
+                    String response = MovieServiceUtil.getResponseFromHttpUrl(url, MainActivity.this);
 
-                    // response as JSON
-                    JSONObject responseJson = new JSONObject(response);
+                    if (response != null) {
 
-                    // results as JSON
-                    JSONArray results = responseJson.getJSONArray("results");
+                        // response as JSON
+                        JSONObject responseJson = new JSONObject(response);
 
-                    ArrayList<Movie> movies = new ArrayList<>();
+                        // results as JSON
+                        JSONArray results = responseJson.getJSONArray("results");
 
-                    for (int i = 0; i < results.length(); i++) {
-                        movies.add(new Movie(results.getJSONObject(i)));
+                        ArrayList<Movie> movies = new ArrayList<>();
+
+                        for (int i = 0; i < results.length(); i++) {
+                            movies.add(new Movie(results.getJSONObject(i)));
+                        }
+
+                        return movies;
                     }
 
-                    return movies;
+                } catch (IOException e) {
+                    Log.e(TAG, "Failed to make request", e);
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "Failed to parse response", e);
                 }
 
-            } catch (IOException e) {
-                Log.e(TAG, "Failed to make request", e);
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e(TAG, "Failed to parse response", e);
+                return null;
             }
 
-            return null;
         }
 
         @Override

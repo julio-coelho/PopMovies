@@ -1,4 +1,4 @@
-package com.example.android.popmovies;
+package com.example.android.popmovies.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.android.popmovies.R;
+import com.example.android.popmovies.model.Video;
 
 import java.util.List;
 
